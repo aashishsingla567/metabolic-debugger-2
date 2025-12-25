@@ -1471,7 +1471,7 @@ const TopStepper: React.FC<{
             {/* Connecting Line */}
             {idx < totalSteps - 1 && (
               <div
-                className={`absolute top-1.5 left-[50%] -z-10 h-0.5 w-[calc(100%_+_2rem)] ${idx < currentStep ? "bg-emerald-900" : "bg-slate-900"}`}
+                className={`absolute top-1.5 left-[calc(50%+6px)] -z-10 h-0.5 w-[calc(100%_+_2rem)] ${idx < currentStep ? "bg-emerald-900" : "bg-slate-900"}`}
               ></div>
             )}
           </div>
