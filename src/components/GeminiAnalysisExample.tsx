@@ -21,9 +21,11 @@ export default function GeminiAnalysisExample({
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   // tRPC hook for Gemini analysis
-  const analyzeData = api.gemini.analyzeMetabolicData.useMutation({
+  const analyzeData = api.gemini.analyzeMetabolicData.useMutation<{
+    analysis: string;
+  }>({
     onSuccess: (data) => {
-      setAnalysis(data.analysis);
+      setAnalysis((data as { analysis: string }).analysis);
       setIsAnalyzing(false);
     },
     onError: (error) => {
