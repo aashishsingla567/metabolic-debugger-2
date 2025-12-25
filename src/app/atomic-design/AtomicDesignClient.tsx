@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Moon,
   Clock,
@@ -59,14 +59,6 @@ export default function AtomicDesignClient({
     icon: iconMap[step.icon] ?? null,
   }));
 
-  useEffect(() => {
-    if (showResult) {
-      document.body.style.overflow = "auto";
-    } else {
-      document.body.style.overflow = "hidden";
-    }
-  }, [showResult]);
-
   const handleAnswer: ValidateFn = (isYes, data) => {
     const stepId = processedSteps[currentStepIndex]!.id;
     setHistory((prev) => ({ ...prev, [stepId]: isYes ? "yes" : "no" }));
@@ -96,7 +88,14 @@ export default function AtomicDesignClient({
   };
 
   return (
-    <div>
+    <>
+      <style>{`
+        @keyframes shake {
+          0%, 100% { transform: translateX(0); }
+          25% { transform: translateX(-5px); }
+          75% { transform: translateX(5px); }
+        }
+      `}</style>
       {!showResult && (
         <TopStepper
           currentStep={currentStepIndex}
@@ -105,21 +104,7 @@ export default function AtomicDesignClient({
         />
       )}
 
-      <div className="mx-auto max-w-5xl pt-8 pb-32">
-        {!showResult && (
-          <div className="mb-12 px-4 text-center">
-            <h1 className="mb-4 text-4xl font-black tracking-tight text-white md:text-5xl">
-              Metabolic{" "}
-              <span className="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">
-                Debugger
-              </span>
-            </h1>
-            <p className="text-lg text-slate-400">
-              Identify rate-limiting step in your biology.
-            </p>
-          </div>
-        )}
-
+      {!showResult ? (
         <div className="border-t border-slate-800">
           {processedSteps.map((step, idx) => {
             let status: StepStatus = "locked";
@@ -138,15 +123,13 @@ export default function AtomicDesignClient({
             );
           })}
         </div>
-
-        {showResult && (
-          <FinalReport
-            reportData={reportData}
-            onRestart={resetFlow}
-            steps={processedSteps}
-          />
-        )}
-      </div>
-    </div>
+      ) : (
+        <FinalReport
+          reportData={reportData}
+          onRestart={resetFlow}
+          steps={processedSteps}
+        />
+      )}
+    </>
   );
 }

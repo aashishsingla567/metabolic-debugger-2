@@ -9,6 +9,8 @@ import {
   History,
 } from "lucide-react";
 
+import { STEPS } from "@/config/steps";
+
 interface SleepData {
   duration: number;
   bedtime: string;
@@ -19,9 +21,23 @@ interface MealAnalysis {
   isOptimal: boolean;
 }
 
+interface MealAnalysis {
+  gap1: string;
+  gap2: string;
+  isOptimal: boolean;
+  msg: string;
+}
+
+type MealTimes = {
+  m1: string;
+  m2: string;
+  m3: string;
+};
+
 interface MealData {
   analysis: MealAnalysis;
   isDaily: boolean;
+  meals?: MealTimes;
 }
 
 interface ProteinMealReport {
@@ -106,12 +122,20 @@ export const FinalReport: React.FC<FinalReportProps> = ({
     }
 
     if (checkStatus("meal-timing") === "fail") {
+      const mealTimingData = reportData["meal-timing"] as
+        | { meals?: MealTimes }
+        | undefined;
+      const meals = mealTimingData?.meals ?? {
+        m1: "08:00",
+        m2: "13:00",
+        m3: "19:00",
+      };
       actions.push({
         step: "Meals",
         title: "Circadian Rhythm",
         detail: "Your eating window is irregular or gaps are suboptimal.",
         steps: [
-          "Stick to consistent meal times everyday ±30mins.",
+          `Stick to ${meals.m1 ?? "Breakfast"}, ${meals.m2 ?? "Lunch"}, ${meals.m3 ?? "Dinner"} everyday ±30mins.`,
           "Do not snack between these meals.",
           "Finish dinner 3 hours before sleep.",
         ],
@@ -124,7 +148,7 @@ export const FinalReport: React.FC<FinalReportProps> = ({
       actions.push({
         step: "Protein",
         title: "Protein Thresholds",
-        detail: `Your ${diet} meals are missing leucine threshold for satiety.`,
+        detail: `Your ${diet} meals are missing the leucine threshold for satiety.`,
         steps: [
           "Aim for 30g protein per meal minimum.",
           "Prioritize protein source first on your plate.",
@@ -176,7 +200,7 @@ export const FinalReport: React.FC<FinalReportProps> = ({
 
   const actionPlan = generateActionPlan();
   const systemScore = Math.round(
-    (((steps?.length ?? 0) - actionPlan.length) / (steps?.length ?? 1)) * 100,
+    ((STEPS.length - actionPlan.length) / STEPS.length) * 100,
   );
 
   return (

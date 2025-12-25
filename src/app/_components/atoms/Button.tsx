@@ -183,7 +183,7 @@ export const Button: React.FC<ButtonProps> = ({
     <button
       onClick={onClick}
       disabled={disabled || loading}
-      className={`w-full rounded-xl py-4 font-bold shadow-lg transition-all active:scale-95 ${instantStyleSet} ${className}`}
+      className={`flex w-full items-center justify-center gap-2 rounded-xl py-4 font-bold shadow-lg transition-all active:scale-95 ${instantStyleSet} ${className}`}
     >
       {loading ? <Loader2 className="animate-spin" /> : children}
     </button>

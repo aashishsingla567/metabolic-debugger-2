@@ -46,3 +46,46 @@
   --color-indigo-300: #a5b4fc;
   --color-indigo-400: #818cf8;
 }
+
+/* Global scrollbar styling - ensures custom scrollbars everywhere */
+@layer utilities {
+  /* Force custom scrollbars globally */
+  html,
+  body,
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(71 85 105) rgb(15 23 42);
+  }
+
+  /* Webkit browsers */
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar,
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  html::-webkit-scrollbar-track,
+  body::-webkit-scrollbar-track,
+  *::-webkit-scrollbar-track {
+    background: rgb(15 23 42);
+  }
+
+  html::-webkit-scrollbar-thumb,
+  body::-webkit-scrollbar-thumb,
+  *::-webkit-scrollbar-thumb {
+    background: rgb(71 85 105);
+    border-radius: 4px;
+  }
+
+  html::-webkit-scrollbar-thumb:hover,
+  body::-webkit-scrollbar-thumb:hover,
+  *::-webkit-scrollbar-thumb:hover {
+    background: rgb(100 116 139);
+  }
+
+  /* Hide all default browser scrollbars and use custom ones */
+  html {
+    scrollbar-color: rgb(71 85 105) rgb(15 23 42);
+  }
+}

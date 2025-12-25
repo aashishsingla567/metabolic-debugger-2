@@ -1,5 +1,8 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+import type { Config } from "tailwindcss";
+import tailwindcssAnimate from "tailwindcss-animate";
+import tailwindScrollbar from "tailwind-scrollbar";
+
+const config: Config = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -77,7 +80,7 @@ module.exports = {
         },
       },
       animation: {
-        // Preserves the custom shake animation from the original <style> tag
+        // Preserves custom shake animation from original <style> tag
         shake: "shake 0.5s cubic-bezier(.36,.07,.19,.97) both",
         in: "animate-in 0.5s ease-out",
         out: "animate-out 0.5s ease-in",
@@ -92,7 +95,7 @@ module.exports = {
       },
     },
   },
-  plugins: [
-    require("tailwindcss-animate"), // REQUIRED: Enables 'animate-in', 'zoom-in', etc.
-  ],
+  plugins: [tailwindcssAnimate, tailwindScrollbar], // REQUIRED: Enables 'animate-in', 'zoom-in', etc. + Custom scrollbars
 };
+
+export default config;

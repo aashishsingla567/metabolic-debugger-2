@@ -463,7 +463,7 @@ export const AIProteinInput: React.FC<AIProteinInputProps> = ({
 
   return (
     <div className="space-y-6">
-      <div className="scrollbar-none flex gap-2 overflow-x-auto pb-2">
+      <div className="scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-900 scrollbar-hover:scrollbar-thumb-slate-500 flex gap-2 overflow-x-auto pb-2">
         {COMMON_PROTEINS.map((item) => (
           <button
             key={item.label}

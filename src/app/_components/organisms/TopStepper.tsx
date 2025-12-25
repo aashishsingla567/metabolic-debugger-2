@@ -28,7 +28,7 @@ export const TopStepper: React.FC<TopStepperProps> = ({
   totalSteps,
   steps,
 }) => (
-  <div className="no-scrollbar sticky top-0 z-50 overflow-x-auto border-b border-slate-800 bg-slate-950/90 px-4 py-4 backdrop-blur-md">
+  <div className="scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-900 scrollbar-hover:scrollbar-thumb-slate-500 sticky top-0 z-50 overflow-x-auto border-b border-slate-800 bg-slate-950/90 px-4 py-4 backdrop-blur-md">
     <div className="mx-auto flex max-w-6xl min-w-[600px] items-center justify-between">
       {steps.map((step, idx) => {
         const isActive = idx === currentStep;

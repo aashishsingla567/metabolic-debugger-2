@@ -35,13 +35,13 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
   stepperProps,
 }) => {
   return (
-    <div className="min-h-screen bg-slate-950 font-sans text-slate-200 selection:bg-emerald-500/30">
+    <div className="scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-900 scrollbar-hover:scrollbar-thumb-slate-500 min-h-screen bg-slate-950 font-sans text-slate-200 selection:bg-emerald-500/30">
       <style>{`
         @keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } }
       `}</style>
 
       {showStepper && stepperProps && (
-        <div className="no-scrollbar sticky top-0 z-50 overflow-x-auto border-b border-slate-800 bg-slate-950/90 px-4 py-4 backdrop-blur-md">
+        <div className="scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-900 scrollbar-hover:scrollbar-thumb-slate-500 sticky top-0 z-50 overflow-x-auto border-b border-slate-800 bg-slate-950/90 px-4 py-4 backdrop-blur-md">
           <div className="mx-auto flex max-w-6xl min-w-150 items-center justify-between">
             {stepperProps.steps.map((step, idx) => {
               const isActive = idx === stepperProps.currentStep;

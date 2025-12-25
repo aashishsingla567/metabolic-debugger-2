@@ -952,7 +952,7 @@ const AIProteinInput: React.FC<{
 
   return (
     <div className="space-y-6">
-      <div className="scrollbar-none flex gap-2 overflow-x-auto pb-2">
+      <div className="scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-900 scrollbar-hover:scrollbar-thumb-slate-500 flex gap-2 overflow-x-auto pb-2">
         {COMMON_PROTEINS.map((item) => (
           <button
             key={item.label}
@@ -1450,7 +1450,7 @@ const TopStepper: React.FC<{
   currentStep: number;
   totalSteps: number;
 }> = ({ currentStep, totalSteps }) => (
-  <div className="no-scrollbar sticky top-0 z-50 overflow-x-auto border-b border-slate-800 bg-slate-950/90 px-4 py-4 backdrop-blur-md">
+  <div className="scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-900 scrollbar-hover:scrollbar-thumb-slate-500 sticky top-0 z-50 overflow-x-auto border-b border-slate-800 bg-slate-950/90 px-4 py-4 backdrop-blur-md">
     <div className="mx-auto flex max-w-6xl min-w-[600px] items-center justify-between">
       {STEPS.map((step, idx) => {
         const isActive = idx === currentStep;
@@ -1518,7 +1518,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 font-sans text-slate-200 selection:bg-emerald-500/30">
+    <div className="scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-900 scrollbar-hover:scrollbar-thumb-slate-500 min-h-screen bg-slate-950 font-sans text-slate-200 selection:bg-emerald-500/30">
       <style>{`
         @keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } }
       `}</style>

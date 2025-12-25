@@ -121,7 +121,7 @@ export const AccordionStep: React.FC<AccordionStepProps> = ({
 
       {/* Expandable Body */}
       <div
-        className={`overflow-hidden transition-all duration-700 ease-in-out ${isExpanded ? "max-h-500 opacity-100" : "max-h-0 opacity-0"}`}
+        className={`scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-900 scrollbar-hover:scrollbar-thumb-slate-500 overflow-hidden transition-all duration-700 ease-in-out ${isExpanded ? "max-h-500 opacity-100" : "max-h-0 opacity-0"}`}
       >
         <div className="grid grid-cols-1 gap-8 px-4 pb-8 lg:grid-cols-2 lg:gap-12">
           {/* LEFT COL: Input / Interaction */}

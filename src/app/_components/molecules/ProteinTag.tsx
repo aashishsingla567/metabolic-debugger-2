@@ -56,7 +56,7 @@ export const ProteinTagList: React.FC<ProteinTagListProps> = ({
 }) => {
   return (
     <div
-      className={`scrollbar-none flex gap-2 overflow-x-auto pb-2 ${className}`}
+      className={`scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-900 scrollbar-hover:scrollbar-thumb-slate-500 flex gap-2 overflow-x-auto pb-2 ${className}`}
     >
       {tags.map((tag) => (
         <ProteinTag
