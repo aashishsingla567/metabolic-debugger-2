@@ -1,7 +1,12 @@
 import React, { useEffect, useRef } from "react";
-import { Edit2, BrainCircuit, AlertTriangle } from "lucide-react";
-import { SleepInput, SelectorInput } from "../molecules";
-import { StatusIndicator, Icon } from "../atoms";
+import { Edit2, BrainCircuit, AlertTriangle, CheckCircle2 } from "lucide-react";
+import {
+  SleepInput,
+  SelectorInput,
+  MealLogInput,
+  AIProteinInput,
+} from "../molecules";
+import { StatusIndicator, Button } from "../atoms";
 
 type StepType = "time-calc" | "meal-log" | "ai-analyze" | "select";
 
@@ -60,6 +65,10 @@ export const AccordionStep: React.FC<AccordionStepProps> = ({
     switch (step.type) {
       case "time-calc":
         return <SleepInput onValidate={onAnswer} isIssue={isIssue} />;
+      case "meal-log":
+        return <MealLogInput onValidate={onAnswer} isIssue={isIssue} />;
+      case "ai-analyze":
+        return <AIProteinInput onValidate={onAnswer} isIssue={isIssue} />;
       case "select":
         return (
           <SelectorInput
@@ -98,6 +107,16 @@ export const AccordionStep: React.FC<AccordionStepProps> = ({
             <p className="text-xs text-slate-600">{step.question}</p>
           )}
         </div>
+        {isCompleted && (
+          <div className="text-emerald-500">
+            <CheckCircle2 size={20} />
+          </div>
+        )}
+        {isIssue && (
+          <div className="text-rose-500">
+            <AlertTriangle size={20} />
+          </div>
+        )}
       </div>
 
       {/* Expandable Body */}
@@ -172,12 +191,14 @@ export const AccordionStep: React.FC<AccordionStepProps> = ({
                       Your inputs indicate this area needs optimization before
                       proceeding.
                     </p>
-                    <button
-                      onClick={() => onAnswer(true)}
-                      className="w-full rounded-xl bg-rose-600 py-4 font-bold text-white shadow-lg transition-all hover:bg-rose-500 active:scale-95"
+                    <Button
+                      mode="hold"
+                      variant="rose"
+                      holdingLabel="Locking in..."
+                      onComplete={() => onAnswer(true)}
                     >
                       I Commit to Fix This
-                    </button>
+                    </Button>
                   </div>
                 </div>
               )}

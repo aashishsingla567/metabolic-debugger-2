@@ -636,7 +636,7 @@ const AIProteinInput: React.FC<{
         const text =
           part?.text?.replace(/```json/g, "").replace(/```/g, "") ?? "";
         setReport(JSON.parse(text) as ProteinReport);
-      } catch (e) {
+      } catch {
         fallbackSimulation();
       }
     } else {

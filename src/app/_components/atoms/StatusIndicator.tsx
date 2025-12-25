@@ -16,7 +16,6 @@ export const StatusIndicator: React.FC<StatusIndicatorProps> = ({
 }) => {
   const isActive = status === "active";
   const isCompleted = status === "completed";
-  const isLocked = status === "locked";
   const isIssue = status === "issue";
 
   return (
@@ -41,7 +40,7 @@ interface StepStatusBadgeProps {
 
 export const StepStatusBadge: React.FC<StepStatusBadgeProps> = ({
   status,
-  className = "",
+  className: _className = "",
 }) => {
   const getStatusConfig = () => {
     switch (status) {

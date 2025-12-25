@@ -55,13 +55,9 @@ export default function GeminiAnalysisExample({
       </h3>
 
       {!analysis && !isAnalyzing && (
-        <Button
-          onComplete={handleAnalyze}
-          label="Get AI Analysis"
-          holdingLabel="Analyzing..."
-          theme="default"
-          variant="primary"
-        />
+        <Button onClick={handleAnalyze} variant="slate">
+          Get AI Analysis
+        </Button>
       )}
 
       {isAnalyzing && (
@@ -76,13 +72,9 @@ export default function GeminiAnalysisExample({
           <div className="prose prose-invert max-w-none">
             <div className="whitespace-pre-wrap text-slate-300">{analysis}</div>
           </div>
-          <Button
-            onComplete={handleAnalyze}
-            label="Re-analyze"
-            holdingLabel="Analyzing..."
-            theme="default"
-            variant="secondary"
-          />
+          <Button onClick={handleAnalyze} variant="slate">
+            Re-analyze
+          </Button>
         </div>
       )}
     </div>

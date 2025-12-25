@@ -72,17 +72,15 @@ export const SleepInput: React.FC<SleepInputProps> = ({
       </div>
 
       <Button
-        onComplete={() =>
+        mode="instant"
+        variant={isIssue ? "rose" : "slate"}
+        onClick={() =>
           onValidate(duration >= 7, { duration, bedtime, waketime })
         }
         disabled={isIssue}
-        label={
-          isIssue ? "Insufficient Sleep Detected" : "Confirm Sleep Schedule"
-        }
-        holdingLabel="Confirming..."
-        theme="default"
-        variant="primary"
-      />
+      >
+        {isIssue ? "Insufficient Sleep Detected" : "Confirm Sleep Schedule"}
+      </Button>
     </div>
   );
 };

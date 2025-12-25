@@ -1,3 +1,11 @@
 export { MealTimeItem } from "./MealTimeItem";
 export { SleepInput } from "./SleepInput";
 export { SelectorInput } from "./SelectorInput";
+export { MealLogInput } from "./MealLogInput";
+export { AIProteinInput } from "./AIProteinInput";
+export { TimeRangeDisplay, GapDisplay } from "./TimeDisplay";
+export { ProteinTag, ProteinTagList } from "./ProteinTag";
+export { BottleneckAlert } from "./BottleneckAlert";
+export { MealGapConnector } from "./MealGapConnector";
+export { StepHeader } from "./StepHeader";
+export { TimeField } from "./TimeField";

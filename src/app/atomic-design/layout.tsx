@@ -1,10 +1,11 @@
+import React from "react";
 import { type Metadata } from "next";
 
 // Atomic design route metadata
 export const metadata: Metadata = {
   title: "Metabolic Debugger - Atomic Design",
   description:
-    "Testing the new atomic design component architecture with React Server Components",
+    "Testing new atomic design component architecture with React Server Components",
 };
 
 // Route-specific layout - common structure for all atomic-design routes
@@ -23,8 +24,8 @@ export default function AtomicDesignLayout({
             </span>
           </h1>
           <p className="text-lg text-slate-400">
-            Testing the new atomic design component architecture with React
-            Server Components
+            Testing new atomic design component architecture with React Server
+            Components
           </p>
         </div>
 

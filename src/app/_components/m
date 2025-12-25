@@ -1,0 +1,52 @@
+import React, { forwardRef } from "react";
+import { AlertTriangle } from "lucide-react";
+import { HoldButton } from "../atoms";
+import { cn } from "../../../lib/utils";
+
+interface BottleneckAlertProps {
+  title?: string;
+  message?: string;
+  onConfirm?: () => void;
+  isConfirming?: boolean;
+  className?: string;
+}
+
+export const BottleneckAlert = forwardRef<HTMLDivElement, BottleneckAlertProps>(
+  (
+    {
+      title = "Bottleneck Detected",
+      message = "Your inputs indicate this area needs optimization before proceeding.",
+      onConfirm,
+      isConfirming = false,
+      className = "",
+    },
+    ref,
+  ) => {
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          "animate-in zoom-in rounded-xl border border-rose-500/50 bg-rose-500/10 p-4 duration-300",
+          className,
+        )}
+      >
+        <div className="mb-2 flex items-center gap-2 font-bold text-rose-400">
+          <AlertTriangle size={18} />
+          <span>{title}</span>
+        </div>
+        <p className="mb-4 text-sm text-rose-200/80">{message}</p>
+        <HoldButton
+          onComplete={onConfirm || (() => {})}
+          disabled={isConfirming}
+          label="I Commit to Fix This"
+          holdingLabel="Committing..."
+          theme="rose"
+          variant="primary"
+          className="w-full"
+        />
+      </div>
+    );
+  },
+);
+
+BottleneckAlert.displayName = "BottleneckAlert";

@@ -1,7 +1,7 @@
 "use client";
 
-import type { ReactNode } from "react";
 import React, { useState } from "react";
+// Atomic Design Imports
 import {
   Moon,
   Clock,
@@ -10,10 +10,8 @@ import {
   Footprints,
   Smartphone,
 } from "lucide-react";
-
-// Import atomic design components
-import { Button, Icon } from "./_components/atoms";
 import { AccordionStep } from "./_components/organisms";
+import { FinalReport } from "./atomic-design/FinalReport";
 import { MainLayout } from "./_components/templates";
 
 // --- Shared Types ---
@@ -31,7 +29,7 @@ type Step = {
   question: string;
   inputLabel: string;
   type: StepType;
-  icon: ReactNode;
+  icon: React.ReactNode;
   noAction: string;
   reason: string;
   detail: string;
@@ -43,7 +41,6 @@ type ValidateFn<T = unknown> = (isYes: boolean, data?: T) => void;
 type StepStatus = "active" | "completed" | "locked" | "issue";
 
 // --- Data & Logic ---
-
 const STEPS: Step[] = [
   {
     id: "sleep",
@@ -133,43 +130,8 @@ const STEPS: Step[] = [
   },
 ];
 
-// --- Final Report Component (Simplified for demo) ---
-
-const FinalReport: React.FC<{
-  reportData: Record<string, unknown>;
-  onRestart: () => void;
-}> = ({ reportData: _reportData, onRestart }) => {
-  return (
-    <div className="animate-in fade-in zoom-in mx-auto max-w-4xl p-4 duration-500 md:p-0">
-      <div className="overflow-hidden rounded-3xl border border-slate-800 bg-slate-900 shadow-2xl">
-        {/* Header */}
-        <div className="border-b border-slate-800 bg-slate-950 p-8 text-center">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-900 px-3 py-1 text-xs font-bold tracking-widest text-slate-400 uppercase">
-            <Icon name="activity" size={14} className="text-emerald-500" />
-            Diagnostic Report
-          </div>
-          <h2 className="mb-2 text-3xl font-black text-white md:text-5xl">
-            Metabolic Blueprint
-          </h2>
-          <p className="text-slate-400">
-            System Efficiency: <span className="text-emerald-400">85%</span>
-          </p>
-        </div>
-
-        {/* Content */}
-        <div className="flex justify-center border-t border-slate-800 bg-slate-950 p-8">
-          <Button onClick={onRestart} variant="slate">
-            Restart Diagnostic
-          </Button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// --- Main App Component ---
-
-export default function App() {
+// --- Main Application Component ---
+export default function MetabolicDebuggerAtomic() {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [showResult, setShowResult] = useState(false);
   const [history, setHistory] = useState<Record<string, "yes" | "no">>({});
@@ -179,6 +141,7 @@ export default function App() {
     const stepId = STEPS[currentStepIndex]!.id;
     setHistory((prev) => ({ ...prev, [stepId]: isYes ? "yes" : "no" }));
 
+    // Store specific step data if provided
     if (data) {
       setReportData((prev) => ({ ...prev, [stepId]: data }));
     }
@@ -232,7 +195,11 @@ export default function App() {
           })}
         </div>
       ) : (
-        <FinalReport reportData={reportData} onRestart={resetFlow} />
+        <FinalReport
+          reportData={reportData}
+          onRestart={resetFlow}
+          steps={STEPS}
+        />
       )}
     </MainLayout>
   );

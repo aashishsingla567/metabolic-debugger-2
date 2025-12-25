@@ -4,7 +4,7 @@ This document collects practical, repeatable conventions and workflows to follow
 
 ---
 
-use bun for package manager
+Never use npm, pnpm or yarn, NEVER. Always use `bun`. Always use bun.
 
 ## Quick checklist
 

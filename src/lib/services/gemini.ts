@@ -91,7 +91,9 @@ const createGeminiClient = (): AxiosInstance => {
     (error: unknown) => {
       if (error instanceof AxiosError && error.response) {
         const status = error.response.status;
-        const errorData = error.response.data as { error?: { message?: string } } | null;
+        const errorData = error.response.data as {
+          error?: { message?: string };
+        } | null;
         const message = errorData?.error?.message ?? error.message;
 
         switch (status) {

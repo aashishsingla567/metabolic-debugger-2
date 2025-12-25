@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import {
   CheckCircle2,
@@ -124,11 +122,11 @@ export const FinalReport: React.FC<FinalReportProps> = ({
       actions.push({
         step: "Protein",
         title: "Protein Thresholds",
-        detail: `Your ${diet} meals are missing leucine threshold for satiety.`,
+        detail: `Your ${diet} meals are missing the leucine threshold for satiety.`,
         steps: [
           "Aim for 30g protein per meal minimum.",
-          "Prioritize protein source first on your plate.",
-          "Use alternatives suggested in the analysis.",
+          "Prioritize the protein source first on your plate.",
+          "Use the alternatives suggested in the analysis.",
         ],
       });
     }
@@ -154,7 +152,7 @@ export const FinalReport: React.FC<FinalReportProps> = ({
         steps: [
           "No screens while eating.",
           "Chew each bite 20 times.",
-          "Put fork down between bites.",
+          "Put the fork down between bites.",
         ],
       });
     }
