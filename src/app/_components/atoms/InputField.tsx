@@ -1,4 +1,5 @@
 import React from "react";
+import { cn } from "@/lib/utils";
 
 interface InputFieldProps {
   type?: "text" | "time";
@@ -27,7 +28,10 @@ export const InputField: React.FC<InputFieldProps> = ({
       placeholder={placeholder}
       disabled={disabled}
       required={required}
-      className={`w-full bg-transparent text-white focus:outline-none ${className}`}
+      className={cn(
+        "w-full bg-transparent text-white focus:outline-none",
+        className,
+      )}
     />
   );
 };
@@ -56,7 +60,10 @@ export const TextArea: React.FC<TextAreaProps> = ({
       placeholder={placeholder}
       disabled={disabled}
       rows={rows}
-      className={`w-full rounded-xl border-2 border-slate-800 bg-transparent p-4 text-sm text-white transition-colors outline-none placeholder:text-slate-700 focus:border-emerald-500 ${className}`}
+      className={cn(
+        "w-full rounded-xl border-2 border-slate-800 bg-transparent p-4 text-sm text-white transition-colors outline-none placeholder:text-slate-700 focus:border-emerald-500",
+        className,
+      )}
     />
   );
 };

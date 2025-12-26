@@ -5,6 +5,7 @@ import {
   ShieldCheck,
   Loader2,
 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 type ButtonMode = "instant" | "hold";
 
@@ -153,7 +154,14 @@ export const Button: React.FC<ButtonProps> = ({
         onTouchStart={startHold}
         onTouchEnd={endHold}
         disabled={disabled}
-        className={`relative flex w-full touch-none items-center justify-center gap-2 overflow-hidden rounded-xl px-4 py-3 font-bold shadow-lg transition-all select-none ${currentHoldTheme.bg} ${currentHoldTheme.text} ${disabled ? "cursor-not-allowed opacity-50 grayscale" : "cursor-pointer active:scale-95"} ${className}`}
+        className={cn(
+          "relative flex w-full touch-none items-center justify-center gap-2 overflow-hidden rounded-xl px-4 py-3 font-bold shadow-lg transition-all select-none",
+          currentHoldTheme.bg,
+          currentHoldTheme.text,
+          disabled && "cursor-not-allowed opacity-50 grayscale",
+          !disabled && "cursor-pointer active:scale-95",
+          className,
+        )}
         style={{
           animation: shake
             ? "shake 0.5s cubic-bezier(.36,.07,.19,.97) both"
@@ -161,7 +169,10 @@ export const Button: React.FC<ButtonProps> = ({
         }}
       >
         <div
-          className={`absolute inset-0 ${currentHoldTheme.fill} opacity-30 transition-none`}
+          className={cn(
+            "absolute inset-0 opacity-30 transition-none",
+            currentHoldTheme.fill,
+          )}
           style={{ width: `${progress}%` }}
         />
         <span className="relative z-10 flex items-center gap-2 text-xs tracking-wider uppercase">
@@ -183,7 +194,11 @@ export const Button: React.FC<ButtonProps> = ({
     <button
       onClick={onClick}
       disabled={disabled || loading}
-      className={`flex w-full items-center justify-center gap-2 rounded-xl py-4 font-bold shadow-lg transition-all active:scale-95 ${instantStyleSet} ${className}`}
+      className={cn(
+        "flex w-full items-center justify-center gap-2 rounded-xl py-4 font-bold shadow-lg transition-all active:scale-95",
+        instantStyleSet,
+        className,
+      )}
     >
       {loading ? <Loader2 className="animate-spin" /> : children}
     </button>

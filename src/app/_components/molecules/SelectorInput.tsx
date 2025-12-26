@@ -1,5 +1,6 @@
 import React from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Lock } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 type StepOption = {
   label: string;
@@ -28,13 +29,18 @@ export const SelectorInput: React.FC<SelectorInputProps> = ({
           onValidate(opt.pass, { selection: opt.label, value: opt.value })
         }
         disabled={isIssue}
-        className={`group flex items-center justify-between rounded-xl border bg-slate-900 px-5 py-4 text-left shadow-sm transition-all ${isIssue ? "cursor-not-allowed border-slate-800 opacity-50 grayscale" : "cursor-pointer border-slate-700 hover:border-emerald-500 hover:bg-slate-800"} `}
+        className={cn(
+          "group flex items-center justify-between rounded-xl border bg-slate-900 px-5 py-4 text-left shadow-sm transition-all",
+          isIssue && "cursor-not-allowed border-slate-800 opacity-50 grayscale",
+          !isIssue &&
+            "cursor-pointer border-slate-700 hover:border-emerald-500 hover:bg-slate-800",
+        )}
       >
         <span className="font-medium text-slate-200 group-hover:text-white">
           {opt.label}
         </span>
         {isIssue ? (
-          <ChevronDown className="-rotate-90 text-slate-600" size={20} />
+          <Lock size={20} className="text-slate-600" />
         ) : (
           <ChevronDown
             className="-rotate-90 text-emerald-500 opacity-0 transition-all group-hover:opacity-100"

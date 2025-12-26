@@ -1,2 +1,2 @@
 export { MainLayout } from "./MainLayout";
-export { WizardLayout } from "./WizardLayout";
+export { StepContentLayout } from "./StepContentLayout";

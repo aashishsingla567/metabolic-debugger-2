@@ -1,5 +1,6 @@
 import React from "react";
 import { CheckCircle2, AlertTriangle, Lock } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 type StatusType = "active" | "completed" | "locked" | "issue";
 
@@ -20,7 +21,15 @@ export const StatusIndicator: React.FC<StatusIndicatorProps> = ({
 
   return (
     <div
-      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-colors ${isCompleted ? "border-emerald-500 bg-emerald-500 text-slate-900" : isActive ? "border-emerald-500 bg-slate-800 text-emerald-400" : "border-slate-700 bg-slate-900 text-slate-500"} ${className}`}
+      className={cn(
+        "flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-colors",
+        isCompleted && "border-emerald-500 bg-emerald-500 text-slate-900",
+        isActive && "border-emerald-500 bg-slate-800 text-emerald-400",
+        !isCompleted &&
+          !isActive &&
+          "border-slate-700 bg-slate-900 text-slate-500",
+        className,
+      )}
     >
       {isCompleted ? (
         <CheckCircle2 size={18} />

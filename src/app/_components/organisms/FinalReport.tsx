@@ -3,6 +3,12 @@ import {
   CheckCircle2,
   Target,
   Activity,
+  Moon,
+  Clock,
+  Utensils,
+  Leaf,
+  Smartphone,
+  Footprints,
   ArrowRight,
   History,
 } from "lucide-react";
@@ -47,18 +53,24 @@ interface ActionPlan {
 interface FinalReportProps {
   reportData: Record<string, unknown>;
   onRestart: () => void;
-  steps?: Array<{
-    id: string;
-    title: string;
-    icon: React.ReactNode;
-  }>;
 }
 
 export const FinalReport: React.FC<FinalReportProps> = ({
   reportData,
   onRestart,
-  steps,
 }) => {
+  const allSteps = [
+    { id: "sleep", title: "Sleep Duration", icon: <Moon size={20} /> },
+    { id: "meal-timing", title: "Meal Consistency", icon: <Clock size={20} /> },
+    { id: "protein", title: "Protein Analysis", icon: <Utensils size={20} /> },
+    { id: "order", title: "Eating Sequence", icon: <Leaf size={20} /> },
+    { id: "hygiene", title: "Eating Hygiene", icon: <Smartphone size={20} /> },
+    {
+      id: "movement",
+      title: "Post-Meal Action",
+      icon: <Footprints size={20} />,
+    },
+  ];
   // Helper to determine if a step failed based on DATA
   const checkStatus = (id: string): "pass" | "fail" | "unknown" => {
     const data = reportData[id];
@@ -173,8 +185,9 @@ export const FinalReport: React.FC<FinalReportProps> = ({
   };
 
   const actionPlan = generateActionPlan();
+  const totalSteps = allSteps.length;
   const systemScore = Math.round(
-    (((steps?.length ?? 0) - actionPlan.length) / (steps?.length ?? 1)) * 100,
+    ((totalSteps - actionPlan.length) / totalSteps) * 100,
   );
 
   return (
@@ -208,19 +221,24 @@ export const FinalReport: React.FC<FinalReportProps> = ({
               <CheckCircle2 size={18} /> Optimized Systems
             </h3>
             <div className="space-y-3">
-              {steps
-                ?.filter((s) => checkStatus(s.id) === "pass")
-                .map((s) => (
-                  <div
-                    key={s.id}
-                    className="flex items-center gap-3 rounded-xl border border-emerald-500/20 bg-emerald-950/10 p-4"
-                  >
-                    <div className="text-emerald-500">{s.icon}</div>
-                    <span className="font-medium text-slate-200">
-                      {s.title}
-                    </span>
-                  </div>
-                ))}
+              {allSteps
+                .filter(
+                  (s: { id: string; title: string; icon: React.ReactNode }) =>
+                    checkStatus(s.id) === "pass",
+                )
+                .map(
+                  (s: { id: string; title: string; icon: React.ReactNode }) => (
+                    <div
+                      key={s.id}
+                      className="flex items-center gap-3 rounded-xl border border-emerald-500/20 bg-emerald-950/10 p-4"
+                    >
+                      <div className="text-emerald-500">{s.icon}</div>
+                      <span className="font-medium text-slate-200">
+                        {s.title}
+                      </span>
+                    </div>
+                  ),
+                )}
               {actionPlan.length === 0 && (
                 <p className="text-sm text-slate-400 italic">
                   All systems checks passed. You are metabolically optimized.

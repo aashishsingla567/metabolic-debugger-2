@@ -150,7 +150,6 @@ export const MealLogInput: React.FC<MealLogInputProps> = ({
         onClick={() =>
           onValidate(analysis.isOptimal, { meals, analysis, isDaily })
         }
-        disabled={isIssue}
       >
         {isIssue ? "Rhythm Issues Found" : "Analyze Rhythm"}
       </Button>

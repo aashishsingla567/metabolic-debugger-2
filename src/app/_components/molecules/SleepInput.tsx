@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { InputField, InputLabel, Button } from "../atoms/index";
+import { cn } from "@/lib/utils";
 
 type SleepData = {
   duration: number;
@@ -64,7 +65,10 @@ export const SleepInput: React.FC<SleepInputProps> = ({
       <div className="flex items-center justify-between rounded-xl border border-slate-800 bg-slate-900/50 p-4">
         <span className="text-sm text-slate-400">Total Rest</span>
         <span
-          className={`text-2xl font-black ${duration >= 7 ? "text-emerald-400" : "text-rose-400"}`}
+          className={cn(
+            "text-2xl font-black",
+            duration >= 7 ? "text-emerald-400" : "text-rose-400",
+          )}
         >
           {duration}{" "}
           <span className="text-sm font-normal text-slate-500">hours</span>
@@ -77,7 +81,6 @@ export const SleepInput: React.FC<SleepInputProps> = ({
         onClick={() =>
           onValidate(duration >= 7, { duration, bedtime, waketime })
         }
-        disabled={isIssue}
       >
         {isIssue ? "Insufficient Sleep Detected" : "Confirm Sleep Schedule"}
       </Button>

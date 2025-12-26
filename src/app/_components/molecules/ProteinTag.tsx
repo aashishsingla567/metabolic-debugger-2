@@ -1,4 +1,5 @@
 import React from "react";
+import { cn } from "@/lib/utils";
 
 interface ProteinTagProps {
   label: string;
@@ -21,13 +22,17 @@ export const ProteinTag: React.FC<ProteinTagProps> = ({
     <button
       onClick={onClick}
       disabled={disabled}
-      className={`flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-all ${
-        disabled
-          ? "cursor-not-allowed border-slate-700 opacity-50"
-          : active
-            ? "border-emerald-500 bg-emerald-500/20 text-emerald-300"
-            : "border-slate-600 bg-slate-800 text-slate-300 hover:border-emerald-500 hover:bg-slate-700"
-      } ${className} `}
+      className={cn(
+        "flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-all",
+        disabled && "cursor-not-allowed border-slate-700 opacity-50",
+        !disabled &&
+          active &&
+          "border-emerald-500 bg-emerald-500/20 text-emerald-300",
+        !disabled &&
+          !active &&
+          "border-slate-600 bg-slate-800 text-slate-300 hover:border-emerald-500 hover:bg-slate-700",
+        className,
+      )}
     >
       <span>{icon}</span>
       {label}
@@ -56,7 +61,10 @@ export const ProteinTagList: React.FC<ProteinTagListProps> = ({
 }) => {
   return (
     <div
-      className={`scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-900 scrollbar-hover:scrollbar-thumb-slate-500 flex gap-2 overflow-x-auto pb-2 ${className}`}
+      className={cn(
+        "scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-900 scrollbar-hover:scrollbar-thumb-slate-500 flex gap-2 overflow-x-auto pb-2",
+        className,
+      )}
     >
       {tags.map((tag) => (
         <ProteinTag

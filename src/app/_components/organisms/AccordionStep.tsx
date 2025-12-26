@@ -5,8 +5,11 @@ import {
   SelectorInput,
   MealLogInput,
   AIProteinInput,
+  BottleneckAlert,
 } from "../molecules";
-import { StatusIndicator, Button } from "../atoms";
+import { StatusIndicator } from "../atoms";
+import { StepContentLayout } from "../templates";
+import { cn } from "@/lib/utils";
 
 type StepType = "time-calc" | "meal-log" | "ai-analyze" | "select";
 
@@ -86,7 +89,10 @@ export const AccordionStep: React.FC<AccordionStepProps> = ({
 
   return (
     <div
-      className={`border-b border-slate-800 transition-all duration-500 last:border-0 ${isExpanded ? "bg-slate-950 py-4" : "bg-transparent py-0"}`}
+      className={cn(
+        "border-b border-slate-800 transition-all duration-500 last:border-0",
+        isExpanded ? "bg-slate-950 py-4" : "bg-transparent py-0",
+      )}
     >
       <style>{`
         @keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } }
@@ -94,12 +100,20 @@ export const AccordionStep: React.FC<AccordionStepProps> = ({
 
       {/* Header Row */}
       <div
-        className={`flex items-center gap-4 px-4 py-4 ${isLocked ? "opacity-30" : "opacity-100"} ${isExpanded ? "mb-4" : ""}`}
+        className={cn(
+          "flex items-center gap-4 px-4 py-4",
+          isLocked && "opacity-30",
+          !isLocked && "opacity-100",
+          isExpanded && "mb-4",
+        )}
       >
         <StatusIndicator status={status} index={index} />
         <div className="flex-1">
           <h3
-            className={`text-lg font-bold ${isExpanded ? "text-white" : "text-slate-400"}`}
+            className={cn(
+              "text-lg font-bold",
+              isExpanded ? "text-white" : "text-slate-400",
+            )}
           >
             {step.title}
           </h3>
@@ -121,28 +135,23 @@ export const AccordionStep: React.FC<AccordionStepProps> = ({
 
       {/* Expandable Body */}
       <div
-        className={`scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-900 scrollbar-hover:scrollbar-thumb-slate-500 overflow-hidden transition-all duration-700 ease-in-out ${isExpanded ? "max-h-500 opacity-100" : "max-h-0 opacity-0"}`}
+        className={cn(
+          "scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-900 scrollbar-hover:scrollbar-thumb-slate-500 overflow-hidden transition-all duration-700 ease-in-out",
+          isExpanded ? "max-h-500 opacity-100" : "max-h-0 opacity-0",
+        )}
       >
-        <div className="grid grid-cols-1 gap-8 px-4 pb-8 lg:grid-cols-2 lg:gap-12">
-          {/* LEFT COL: Input / Interaction */}
-          <div
-            className={`animate-in slide-in-from-left-4 order-2 delay-100 duration-700 lg:order-1 ${isIssue ? "pointer-events-none" : "opacity-100"}`}
-          >
-            <div
-              className={`rounded-2xl border bg-slate-900/50 p-6 shadow-2xl transition-colors duration-500 ${isIssue ? "border-rose-900/30" : "border-slate-800"}`}
-            >
+        <StepContentLayout
+          isIssue={isIssue}
+          leftContent={
+            <>
               <h4 className="mb-6 flex items-center gap-2 text-sm font-bold tracking-widest text-slate-400 uppercase">
                 <Edit2 size={14} /> {step.inputLabel}
               </h4>
               {renderInput()}
-            </div>
-          </div>
-
-          {/* RIGHT COL: Context / Education / Results */}
-          <div className="animate-in slide-in-from-right-4 order-1 duration-700 lg:order-2">
-            <div
-              className={`flex h-full flex-col rounded-2xl border p-6 transition-colors duration-500 ${isIssue ? "border-rose-500/30 bg-rose-950/20 shadow-[0_0_30px_rgba(225,29,72,0.15)]" : "border-slate-700 bg-slate-800/30"}`}
-            >
+            </>
+          }
+          rightContent={
+            <>
               {/* Educational Header */}
               <div className="mb-6">
                 <div className="mb-2 flex items-center gap-3">
@@ -182,29 +191,12 @@ export const AccordionStep: React.FC<AccordionStepProps> = ({
                   ref={fixRef}
                   className="animate-in zoom-in mt-auto duration-300"
                 >
-                  <div className="rounded-xl border border-rose-500/50 bg-rose-500/10 p-4">
-                    <div className="mb-2 flex items-center gap-2 font-bold text-rose-400">
-                      <AlertTriangle size={18} />
-                      <span>Bottleneck Detected</span>
-                    </div>
-                    <p className="mb-4 text-sm text-rose-200/80">
-                      Your inputs indicate this area needs optimization before
-                      proceeding.
-                    </p>
-                    <Button
-                      mode="hold"
-                      variant="rose"
-                      holdingLabel="Locking in..."
-                      onComplete={() => onAnswer(true)}
-                    >
-                      I Commit to Fix This
-                    </Button>
-                  </div>
+                  <BottleneckAlert onConfirm={() => onAnswer(true)} />
                 </div>
               )}
-            </div>
-          </div>
-        </div>
+            </>
+          }
+        />
       </div>
     </div>
   );

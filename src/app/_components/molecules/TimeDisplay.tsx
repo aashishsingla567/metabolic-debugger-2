@@ -1,4 +1,5 @@
 import React from "react";
+import { cn } from "@/lib/utils";
 
 interface TimeRangeDisplayProps {
   duration: number;
@@ -20,10 +21,13 @@ export const TimeRangeDisplay: React.FC<TimeRangeDisplayProps> = ({
 
   return (
     <div
-      className={`flex items-center justify-between rounded-xl border border-slate-800 bg-slate-900/50 p-4 ${className}`}
+      className={cn(
+        "flex items-center justify-between rounded-xl border border-slate-800 bg-slate-900/50 p-4",
+        className,
+      )}
     >
       <span className="text-sm text-slate-400">{label}</span>
-      <span className={`text-2xl font-black ${colorClass}`}>
+      <span className={cn("text-2xl font-black", colorClass)}>
         {duration}
         <span className="ml-1 text-sm font-normal text-slate-500">{unit}</span>
       </span>
@@ -45,7 +49,7 @@ export const GapDisplay: React.FC<GapDisplayProps> = ({
   const colorClass = isOptimal ? "text-emerald-500" : "text-rose-500";
 
   return (
-    <span className={`font-mono text-xs ${colorClass} ${className}`}>
+    <span className={cn("font-mono text-xs", colorClass, className)}>
       {gap}h Fast
     </span>
   );

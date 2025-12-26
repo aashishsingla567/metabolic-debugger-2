@@ -1,4 +1,5 @@
 import React from "react";
+import { cn } from "@/lib/utils";
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -36,10 +37,6 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
 }) => {
   return (
     <div className="scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-900 scrollbar-hover:scrollbar-thumb-slate-500 min-h-screen bg-slate-950 font-sans text-slate-200 selection:bg-emerald-500/30">
-      <style>{`
-        @keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } }
-      `}</style>
-
       {showStepper && stepperProps && (
         <div className="scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-900 scrollbar-hover:scrollbar-thumb-slate-500 sticky top-0 z-50 overflow-x-auto border-b border-slate-800 bg-slate-950/90 px-4 py-4 backdrop-blur-md">
           <div className="mx-auto flex max-w-6xl min-w-150 items-center justify-between">
@@ -52,17 +49,33 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                   className="group relative flex cursor-default flex-col items-center gap-2"
                 >
                   <div
-                    className={`h-3 w-3 rounded-full transition-all duration-500 ${isActive ? "scale-125 bg-emerald-500 shadow-[0_0_10px_emerald]" : isCompleted ? "bg-emerald-800" : "bg-slate-800"}`}
+                    className={cn(
+                      "h-3 w-3 rounded-full transition-all duration-500",
+                      isActive &&
+                        "scale-125 bg-emerald-500 shadow-[0_0_10px_emerald]",
+                      isCompleted && !isActive && "bg-emerald-800",
+                      !isActive && !isCompleted && "bg-slate-800",
+                    )}
                   ></div>
                   <span
-                    className={`text-[10px] font-bold tracking-wider uppercase transition-colors ${isActive ? "text-white" : isCompleted ? "text-emerald-700" : "text-slate-700"}`}
+                    className={cn(
+                      "text-[10px] font-bold tracking-wider uppercase transition-colors",
+                      isActive && "text-white",
+                      isCompleted && !isActive && "text-emerald-700",
+                      !isActive && !isCompleted && "text-slate-700",
+                    )}
                   >
                     Step {idx + 1}
                   </span>
                   {/* Connecting Line */}
                   {idx < stepperProps.totalSteps - 1 && (
                     <div
-                      className={`absolute top-1.5 left-[50%] -z-10 h-0.5 w-[calc(100%+2rem)] ${idx < stepperProps.currentStep ? "bg-emerald-900" : "bg-slate-900"}`}
+                      className={cn(
+                        "absolute top-1.5 left-[50%] -z-10 h-0.5 w-[calc(100%+2rem)]",
+                        idx < stepperProps.currentStep
+                          ? "bg-emerald-900"
+                          : "bg-slate-900",
+                      )}
                     ></div>
                   )}
                 </div>

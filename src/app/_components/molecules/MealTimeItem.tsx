@@ -1,5 +1,6 @@
 import React from "react";
 import { InputField } from "../atoms/InputField";
+import { cn } from "@/lib/utils";
 
 interface MealTimeItemProps {
   mealNumber: number;
@@ -18,7 +19,10 @@ export const MealTimeItem: React.FC<MealTimeItemProps> = ({
 }) => {
   return (
     <div
-      className={`flex items-center gap-4 rounded-xl border border-slate-700 bg-slate-900 p-3 ${className}`}
+      className={cn(
+        "flex items-center gap-4 rounded-xl border border-slate-700 bg-slate-900 p-3",
+        className,
+      )}
     >
       <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-800 text-xs font-bold text-slate-400">
         {mealNumber}

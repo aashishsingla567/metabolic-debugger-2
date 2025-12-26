@@ -1,4 +1,5 @@
 import React from "react";
+import { cn } from "@/lib/utils";
 
 interface LabelProps {
   children: React.ReactNode;
@@ -22,7 +23,7 @@ export const Label: React.FC<LabelProps> = ({
   };
 
   return (
-    <span className={`${variantClasses[variant]} ${className}`}>
+    <span className={cn(variantClasses[variant], className)}>
       {children}
       {required && <span className="ml-1 text-rose-400">*</span>}
     </span>
@@ -43,7 +44,10 @@ export const InputLabel: React.FC<InputLabelProps> = ({
   return (
     <label
       htmlFor={htmlFor}
-      className={`mb-2 block text-xs font-bold tracking-wider text-slate-400 uppercase ${className}`}
+      className={cn(
+        "mb-2 block text-xs font-bold tracking-wider text-slate-400 uppercase",
+        className,
+      )}
     >
       {children}
     </label>

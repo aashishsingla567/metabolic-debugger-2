@@ -8,6 +8,7 @@ import {
   Leaf,
 } from "lucide-react";
 import { Button } from "../atoms";
+import { cn } from "@/lib/utils";
 
 type ValidateFn<T = unknown> = (isYes: boolean, data?: T) => void;
 
@@ -380,7 +381,12 @@ export const AIProteinInput: React.FC<AIProteinInputProps> = ({
             return (
               <div
                 key={key}
-                className={`rounded-xl border p-5 ${isGood ? "border-emerald-500/30 bg-slate-900" : "border-rose-500/30 bg-slate-900"}`}
+                className={cn(
+                  "rounded-xl border p-5",
+                  isGood
+                    ? "border-emerald-500/30 bg-slate-900"
+                    : "border-rose-500/30 bg-slate-900",
+                )}
               >
                 {/* Echo User Input */}
                 <div className="mb-3 border-b border-slate-800/50 pb-3">
@@ -404,7 +410,10 @@ export const AIProteinInput: React.FC<AIProteinInputProps> = ({
                       {meal.ingredients}
                     </span>
                     <span
-                      className={`font-mono text-xs font-bold ${isGood ? "text-emerald-400" : "text-rose-400"}`}
+                      className={cn(
+                        "font-mono text-xs font-bold",
+                        isGood ? "text-emerald-400" : "text-rose-400",
+                      )}
                     >
                       {meal.protein}
                     </span>
@@ -453,7 +462,6 @@ export const AIProteinInput: React.FC<AIProteinInputProps> = ({
           mode="instant"
           variant={isIssue ? "rose" : "emerald"}
           onClick={() => onValidate(report.overall.pass, { logs, report })}
-          disabled={isIssue}
         >
           {isIssue ? "Review Issues Above" : "Proceed"}
         </Button>
@@ -468,7 +476,12 @@ export const AIProteinInput: React.FC<AIProteinInputProps> = ({
           <button
             key={item.label}
             onClick={() => addTag(item.label)}
-            className={`flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-all ${!activeMeal ? "cursor-not-allowed border-slate-700 opacity-50" : "border-slate-600 bg-slate-800 text-slate-300 hover:border-emerald-500"}`}
+            className={cn(
+              "flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-all",
+              !activeMeal && "cursor-not-allowed border-slate-700 opacity-50",
+              activeMeal &&
+                "border-slate-600 bg-slate-800 text-slate-300 hover:border-emerald-500",
+            )}
           >
             <span>{item.icon}</span> {item.label}{" "}
             {activeMeal && <Plus size={10} />}
@@ -488,7 +501,10 @@ export const AIProteinInput: React.FC<AIProteinInputProps> = ({
               value={logs[m]}
               onFocus={() => setActiveMeal(m)}
               onChange={(e) => setLogs({ ...logs, [m]: e.target.value })}
-              className={`w-full rounded-xl border-2 border-slate-800 bg-transparent p-4 text-sm text-white transition-colors outline-none placeholder:text-slate-700 focus:border-emerald-500 ${activeMeal === m ? "border-emerald-500" : ""}`}
+              className={cn(
+                "w-full rounded-xl border-2 border-slate-800 bg-transparent p-4 text-sm text-white transition-colors outline-none placeholder:text-slate-700 focus:border-emerald-500",
+                activeMeal === m && "border-emerald-500",
+              )}
             />
           </div>
         ))}
