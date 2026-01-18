@@ -1,10 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-redundant-type-constituents */
 import NextAuth from "next-auth";
-import { cache } from "react";
+import { authOptions } from "./config";
 
-import { authConfig } from "./config";
+const handler = NextAuth(authOptions);
 
-const { auth: uncachedAuth, handlers, signIn, signOut } = NextAuth(authConfig);
-
-const auth = cache(uncachedAuth);
-
-export { auth, handlers, signIn, signOut };
+export { handler as GET, handler as POST };
+export const getServerAuthSession = () =>
+  Promise.resolve<Awaited<ReturnType<typeof NextAuth>> | null>(null);

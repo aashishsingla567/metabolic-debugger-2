@@ -9,8 +9,76 @@
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
+import { type Session } from "next-auth";
 
-import { auth } from "@/server/auth";
+import { getServerAuthSession } from "@/server/auth";
+
+interface RateLimitInfo {
+  count: number;
+  resetTime: number;
+}
+
+const rateLimitMap = new Map<string, RateLimitInfo>();
+
+const RATE_LIMIT_WINDOW_MS = 60 * 1000;
+const RATE_LIMIT_MAX_REQUESTS = 30;
+
+function getClientIP(headers: Headers): string {
+  const forwardedFor = headers.get("x-forwarded-for");
+  if (forwardedFor) {
+    const parts = forwardedFor.split(",");
+    const ip = parts[0]?.trim();
+    if (ip) {
+      return ip;
+    }
+  }
+  const realIP = headers.get("x-real-ip");
+  if (realIP) {
+    return realIP;
+  }
+  return "unknown";
+}
+
+function checkRateLimit(identifier: string): {
+  success: boolean;
+  remaining: number;
+  resetTime: number;
+} {
+  const now = Date.now();
+  const info = rateLimitMap.get(identifier);
+
+  if (!info || now > info.resetTime) {
+    const newResetTime = now + RATE_LIMIT_WINDOW_MS;
+    rateLimitMap.set(identifier, { count: 1, resetTime: newResetTime });
+    return {
+      success: true,
+      remaining: RATE_LIMIT_MAX_REQUESTS - 1,
+      resetTime: newResetTime,
+    };
+  }
+
+  if (info.count >= RATE_LIMIT_MAX_REQUESTS) {
+    return { success: false, remaining: 0, resetTime: info.resetTime };
+  }
+
+  info.count++;
+  return {
+    success: true,
+    remaining: RATE_LIMIT_MAX_REQUESTS - info.count,
+    resetTime: info.resetTime,
+  };
+}
+
+function cleanupExpiredEntries(): void {
+  const now = Date.now();
+  for (const [key, value] of rateLimitMap.entries()) {
+    if (now > value.resetTime) {
+      rateLimitMap.delete(key);
+    }
+  }
+}
+
+setInterval(cleanupExpiredEntries, 5 * 60 * 1000);
 
 /**
  * 1. CONTEXT
@@ -25,10 +93,10 @@ import { auth } from "@/server/auth";
  * @see https://trpc.io/docs/server/context
  */
 export const createTRPCContext = async (opts: { headers: Headers }) => {
-  const session = await auth();
+  const session = await getServerAuthSession();
 
   return {
-    session,
+    session: session as Session | null,
     ...opts,
   };
 };
@@ -52,6 +120,22 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
       },
     };
   },
+});
+
+const ratelimitMiddleware = t.middleware(async ({ ctx, next }) => {
+  const headers = ctx.headers instanceof Headers ? ctx.headers : new Headers();
+  const ip = getClientIP(headers);
+  const { success, resetTime } = checkRateLimit(ip);
+
+  if (!success) {
+    const retryAfter = Math.ceil((resetTime - Date.now()) / 1000);
+    throw new TRPCError({
+      code: "TOO_MANY_REQUESTS",
+      message: `Rate limit exceeded. Try again in ${retryAfter} seconds.`,
+    });
+  }
+
+  return next();
 });
 
 /**
@@ -85,7 +169,6 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
   const start = Date.now();
 
   if (t._config.isDev) {
-    // artificial delay in dev
     const waitMs = Math.floor(Math.random() * 400) + 100;
     await new Promise((resolve) => setTimeout(resolve, waitMs));
   }
@@ -93,7 +176,7 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
   const result = await next();
 
   const end = Date.now();
-  console.log(`[TRPC] ${path} took ${end - start}ms to execute`);
+  console.log(`[TRPC] ${path ?? "<no-path>"} took ${end - start}ms to execute`);
 
   return result;
 });
@@ -104,8 +187,12 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
  * This is the base piece you use to build new queries and mutations on your tRPC API. It does not
  * guarantee that a user querying is authorized, but you can still access user session data if they
  * are logged in.
+ *
+ * @see https://trpc.io/docs/procedures
  */
-export const publicProcedure = t.procedure.use(timingMiddleware);
+export const publicProcedure = t.procedure
+  .use(timingMiddleware)
+  .use(ratelimitMiddleware);
 
 /**
  * Protected (authenticated) procedure
@@ -117,13 +204,13 @@ export const publicProcedure = t.procedure.use(timingMiddleware);
  */
 export const protectedProcedure = t.procedure
   .use(timingMiddleware)
+  .use(ratelimitMiddleware)
   .use(({ ctx, next }) => {
     if (!ctx.session?.user) {
       throw new TRPCError({ code: "UNAUTHORIZED" });
     }
     return next({
       ctx: {
-        // infers the `session` as non-nullable
         session: { ...ctx.session, user: ctx.session.user },
       },
     });
