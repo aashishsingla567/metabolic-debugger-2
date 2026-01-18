@@ -93,10 +93,10 @@ setInterval(cleanupExpiredEntries, 5 * 60 * 1000);
  * @see https://trpc.io/docs/server/context
  */
 export const createTRPCContext = async (opts: { headers: Headers }) => {
-  const session = await getServerAuthSession();
+  const session = (await getServerAuthSession()) as Session | null | undefined;
 
   return {
-    session: session as Session | null,
+    session: session ?? null,
     ...opts,
   };
 };

@@ -1,3 +1,5 @@
+import { Analytics } from "@vercel/analytics/next";
+
 import "@/styles/globals.css";
 
 import { type Metadata } from "next";
@@ -24,7 +26,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn(geist.variable)}>
       <body className="scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-900 scrollbar-hover:scrollbar-thumb-slate-500">
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+        <TRPCReactProvider>
+          {children}
+          <Analytics />
+        </TRPCReactProvider>
       </body>
     </html>
   );
